@@ -59,8 +59,9 @@ With 'cardgen' installed the following command will display the help page:
 'cardgen' works in an environment containing the component images needed to 
 compose the playing card images. The GitHub repository contains the file 
 'cardgen/CardWork.tar.gz' which provides this environment. It is recommended 
-that this environment is set up outside of the cardgen-1.0 directory. The 
-environment can be set up with the following commands:
+that this environment is set up outside of the 'cardgen-1.0' directory. The 
+environment can be set up in the parent directory of 'cardgen-1.0' with the 
+following commands:
 
     cd ..
     cp cardgen/CardWork.tar.gz .
@@ -68,7 +69,7 @@ environment can be set up with the following commands:
     cd CardWork/
     ./setup.sh
 
-This quick test will use 'cardgen' to generate a bash script called draw.sh 
+This quick test will use 'cardgen' to generate a bash script called 'draw.sh' 
 which is then run and should create card images in 'cards/1/'.
 
     cardgen -a
