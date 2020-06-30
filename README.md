@@ -10,6 +10,9 @@ ImageMagick command, 'convert', to compose a pack of playing cards from
 existing images. It is very configurable, allowing for playing cards of 
 greatly varying styles to be created.
 
+To use 'cardgen' you will need a C++ compiler and 'make' utility installed. 
+You will also need the ImageMagick image processing suite installed.
+
 ## Cloning and Installing
 
 To clone, install and run this code, execute the following unix/linux commands:
@@ -22,8 +25,8 @@ To clone, install and run this code, execute the following unix/linux commands:
 
 ## Creating a tar file
 
-Sometimes it is more convenient to use a tarbar to share software than connect 
-to GitHub. The following command will create a tar file called 
+Sometimes it is more convenient to use a tar file to share software than 
+connect to GitHub. The following command will create a tar file called 
 'cardgen-1.0.tar.gz' from a cloned copy of the code:
 
     cd cardgen/
@@ -37,9 +40,7 @@ in the 'cardgeneratorUserGuide.pdf' document. For completeness the install
 process is also described below. All three descriptions are essentially the 
 same and clearly, it only needs to be installed once.
 
-To install you will need a C++ compiler and make installed to compile 
-'cardgen' from a release tar file. You will also need the ImageMagick image 
-processing suite installed. The following command will unpack the tar file.
+The following command will unpack the tar file.
 
     tar zxf cardgen-1.0.tar.gz
 
@@ -75,11 +76,11 @@ which is then run and should create card images in 'cards/1/'.
     cardgen -a
     ./draw.sh
 
-# Further reading
+## Further reading
 
 The document 'cardgeneratorUserGuide.pdf' describes the installation, the 
 environment set up and 'cardgen' usage with many examples.
 
-# Additional packages
+## Additional packages
 
 Additional packages are currently unavailable.
