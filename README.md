@@ -19,9 +19,13 @@ To clone, install and run this code, execute the following unix/linux commands:
 
     git clone https://github.com/PhilLockett/cardgen.git
     cd cardgen/
+	./fix.sh
     ./configure
     make
     sudo make install
+
+Note: 'git' clones files in alphabetical order. The 'fix.sh' script corrects 
+the timestamps so that 'make' doesn't try to rebuild unnecessarily.
 
 ## Creating a tar file
 

@@ -314,7 +314,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUBDIRS = src
-dist_doc_DATA = README
+dist_doc_DATA = README README.md
 all: all-recursive
 
 .SUFFIXES:
