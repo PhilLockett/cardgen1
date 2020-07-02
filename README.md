@@ -93,6 +93,6 @@ Additional packages are currently unavailable.
 
 This code has the following points of interest:
 
-  * 'fix.sh' to correct timestamp so that 'make' only builds necessary files.
+  * 'fix.sh' corrects timestamps so that 'make' only builds necessary files.
   * Uses getopt_long() to help handle command line parameters.
-  * Generates a script file whch itself generates a script file.
+  * Generates a script file which itself generates a script file.
