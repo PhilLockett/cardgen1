@@ -40,7 +40,7 @@ connect to GitHub. The following command will create a tar file called
 
 The install process described in the INSTALL document is a generic 
 description of the install process. The install process is also described 
-in the 'cardgeneratorUserGuide.pdf' document. For completeness the install 
+in the 'CardGeneratorUserGuide.pdf' document. For completeness the install 
 process is also described below. All three descriptions are essentially the 
 same and clearly, it only needs to be installed once.
 
@@ -82,9 +82,17 @@ which is then run and should create card images in 'cards/1/'.
 
 ## Further reading
 
-The document 'cardgeneratorUserGuide.pdf' describes the installation, the 
+The document 'CardGeneratorUserGuide.pdf' describes the installation, the 
 environment set up and 'cardgen' usage with many examples.
 
 ## Additional packages
 
 Additional packages are currently unavailable.
+
+## Points of interest
+
+This code has the following points of interest:
+
+  * 'fix.sh' to correct timestamp so that 'make' only builds necessary files.
+  * Uses getopt_long() to help handle command line parameters.
+  * Generates a script file whch itself generates a script file.
