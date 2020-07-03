@@ -151,7 +151,7 @@ const struct
  * Generate the string for drawing the pips on the card. This is a two pass
  * process. The second pass is after the card image has been rotated.
  *
- * @param  pass - First or second pass.
+ * @param  rotate - Rotated on first pass.
  * @param  card - 1 to 13 (ace to king).
  * @param  fileName - name of image file for the pip.
  * @return the generated string.
