@@ -120,8 +120,7 @@ static const int jack[]    = { 3, 4, 10, 11, 12, 0, 5, 6, 9, 13, 14 };
 static const int queen[]   = { 1, 3, 4, 10, 11, 12, 2, 5, 6, 9, 13, 14 };
 static const int king[]    = { 1, 3, 4, 10, 11, 12, 0, 2, 5, 6, 9, 13, 14 };
 
-#define AE(a) ((sizeof(a)) / (sizeof(a[0])))        // Elements in an array.
-#define AD(a) { AE(a), a }
+#define AD(a) { ELEMENTS(a), a }
 
 const struct
 {
@@ -157,12 +156,10 @@ const struct
  * @param  fileName - name of image file for the pip.
  * @return the generated string.
  */
-static string drawStandardPips(int pass, int card, const string & fileName)
+static string drawStandardPips(bool rotate, int card, const string & fileName)
 {
     stringstream outputStream;
     desc pipD(standardPipInfo, fileName);
-
-    const bool rotate = (pass == 1);
 
     for (int i = 0; i < patterns[card].length; ++i)
     {
@@ -516,7 +513,7 @@ int generateScript(int argc, char *argv[])
             if (faceD.useStandardPips())
             {
                 // The face directory does not have the needed image file, use standard pips.
-                drawFace = drawStandardPips(1, c, pipFile);
+                drawFace = drawStandardPips(true, c, pipFile);
             }
             else
             {
@@ -541,7 +538,7 @@ int generateScript(int argc, char *argv[])
 
             if (faceD.useStandardPips())
             {
-                drawFace = drawStandardPips(2, c, pipFile);
+                drawFace = drawStandardPips(false, c, pipFile);
             }
             file << drawFace;				// Draw either the rest of the pips or the needed image.
             file << pipD.draw();			// Draw corner pip.
