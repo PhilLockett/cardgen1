@@ -47,6 +47,9 @@ static string suit;
 static string alt;
 static string card;
 
+static float winPX;
+static float winPY;
+
 
 /**
  * Generate the initial blank card string used as a template for each card.
@@ -63,6 +66,88 @@ static string genStartString(void)
 }
 
 
+static const struct
+{
+
+    int     xIndex;
+    int     yIndex;
+    bool    rotate;
+
+}
+    loc[] =
+{
+    { 0, 0, false },
+    { 0, 1, true },
+    { 0, 1, false },
+    { 1, 1, true },
+    { 2, 1, true },
+    { 1, 1, false },
+    { 2, 1, false },
+    { 1, 0, false },
+    { 2, 0, false },
+    { 0, 3, false },
+    { 0, 3, true },
+    { 1, 4, true },
+    { 2, 4, true },
+    { 1, 4, false },
+    { 2, 4, false },
+    { 0, 5, true },
+    { 0, 5, false }
+
+};
+
+static int getXIndex(int locIndex) { return loc[locIndex].xIndex; }
+static int getYIndex(int locIndex) { return loc[locIndex].yIndex; }
+static bool getRotate(int locIndex) { return loc[locIndex].rotate; }
+
+static const float offsets[] = { (1.0F / 2), (0.0F), (1.0F), (1.0F / 4), (1.0F / 3), (1.0F / 6) };
+
+static float getXOffset(int locIndex) { return offsets[getXIndex(locIndex)]; }
+static float getYOffset(int locIndex) { return offsets[getYIndex(locIndex)]; }
+
+static const int corners[] = { 3, 5 };
+static const int ace[]     = { 0 };
+static const int c2[]      = { 1, 2 };
+static const int c3[]      = { 1, 0, 2 };
+static const int c4[]      = { 3, 4, 5, 6 };
+static const int c5[]      = { 3, 4, 0, 5, 6 };
+static const int c6[]      = { 3, 4, 5, 6, 7, 8 };
+static const int c7[]      = { 3, 4, 5, 6, 7, 8, 9 };
+static const int c8[]      = { 3, 4, 10, 5, 6, 7, 8, 9 };
+static const int c9[]      = { 3, 4, 11, 12, 0, 5, 6, 13, 14 };
+static const int c10[]     = { 3, 4, 11, 12, 15, 5, 6, 13, 14, 16 };
+static const int jack[]    = { 3, 4, 10, 11, 12, 0, 5, 6, 9, 13, 14 };
+static const int queen[]   = { 1, 3, 4, 10, 11, 12, 2, 5, 6, 9, 13, 14 };
+static const int king[]    = { 1, 3, 4, 10, 11, 12, 0, 2, 5, 6, 9, 13, 14 };
+
+#define AE(a) ((sizeof(a)) / (sizeof(a[0])))        // Elements in an array.
+#define AD(a) { AE(a), a }
+
+const struct
+{
+    int length;
+    const int * const locations;
+}
+    patterns[] =
+{
+    AD(corners),
+    AD(ace),
+    AD(c2),
+    AD(c3),
+    AD(c4),
+    AD(c5),
+    AD(c6),
+    AD(c7),
+    AD(c8),
+    AD(c9),
+    AD(c10),
+    AD(jack),
+    AD(queen),
+    AD(king)
+
+};
+
+
 /**
  * Generate the string for drawing the pips on the card. This is a two pass
  * process. The second pass is after the card image has been rotated.
@@ -77,95 +162,17 @@ static string drawStandardPips(int pass, int card, const string & fileName)
     stringstream outputStream;
     desc pipD(standardPipInfo, fileName);
 
-    if (pass == 1)
+    const bool rotate = (pass == 1);
+
+    for (int i = 0; i < patterns[card].length; ++i)
     {
-        if ((card == 2) || (card == 3) || (card == 12) || (card == 13))
+        const int index = patterns[card].locations[i];
+        if (getRotate(index) == rotate)
         {
-            pipD.repos(50, standardPipInfo.getY());
-            outputStream  << pipD.draw();
-        }
+            const float offX = standardPipInfo.getX() + (getXOffset(index) * winPX);
+            const float offY = standardPipInfo.getY() + (getYOffset(index) * winPY);
 
-        if (card >= 4)
-        {
-            pipD.repos(standardPipInfo.getX(), standardPipInfo.getY());
-            outputStream  << pipD.draw();
-
-            pipD.repos(100-standardPipInfo.getX(), standardPipInfo.getY());
-            outputStream  << pipD.draw();
-        }
-
-        if ((card == 8) || (card > 10))
-        {
-            pipD.repos(50, (50+standardPipInfo.getY())/2);
-            outputStream  << pipD.draw();
-        }
-
-        if (card >= 9)
-        {
-            pipD.repos(standardPipInfo.getX(), standardPipInfo.getY()+(100-standardPipInfo.getY()-standardPipInfo.getY())/3);
-            outputStream  << pipD.draw();
-
-            pipD.repos(100-standardPipInfo.getX(), standardPipInfo.getY()+(100-standardPipInfo.getY()-standardPipInfo.getY())/3);
-            outputStream  << pipD.draw();
-        }
-
-        if (card == 10)
-        {
-            pipD.repos(50, standardPipInfo.getY()+(100-standardPipInfo.getY()-standardPipInfo.getY())/6);
-            outputStream  << pipD.draw();
-        }
-    }
-    else
-    if (pass == 2)
-    {
-        if ((card == 1) || (card == 3) || (card == 5) || (card == 9) || (card == 11) || (card == 13))
-        {
-            pipD.repos(50, 50);
-            outputStream  << pipD.draw();
-        }
-
-        if ((card == 2) || (card == 3) || (card == 12) || (card == 13))
-        {
-            pipD.repos(50, standardPipInfo.getY());
-            outputStream  << pipD.draw();
-        }
-
-        if (card >= 4)
-        {
-            pipD.repos(standardPipInfo.getX(), standardPipInfo.getY());
-            outputStream  << pipD.draw();
-
-            pipD.repos(100-standardPipInfo.getX(), standardPipInfo.getY());
-            outputStream  << pipD.draw();
-        }
-
-        if ((card == 6) || (card == 7) || (card == 8))
-        {
-            pipD.repos(standardPipInfo.getX(), 50);
-            outputStream  << pipD.draw();
-
-            pipD.repos(100-standardPipInfo.getX(), 50);
-            outputStream  << pipD.draw();
-        }
-
-        if ((card == 7) || (card == 8) || (card > 10))
-        {
-            pipD.repos(50, (50+standardPipInfo.getY())/2);
-            outputStream  << pipD.draw();
-        }
-
-        if (card >= 9)
-        {
-            pipD.repos(standardPipInfo.getX(), standardPipInfo.getY()+(100-standardPipInfo.getY()-standardPipInfo.getY())/3);
-            outputStream  << pipD.draw();
-
-            pipD.repos(100-standardPipInfo.getX(), standardPipInfo.getY()+(100-standardPipInfo.getY()-standardPipInfo.getY())/3);
-            outputStream  << pipD.draw();
-        }
-
-        if (card == 10)
-        {
-            pipD.repos(50, standardPipInfo.getY()+(100-standardPipInfo.getY()-standardPipInfo.getY())/6);
+            pipD.repos(offX, offY);
             outputStream  << pipD.draw();
         }
     }
@@ -427,6 +434,10 @@ int generateScript(int argc, char *argv[])
 
         return 1;
     }
+
+//- Calculate viewport window size as percentages of the card size.
+    winPX = (100.0F - (2.0F * standardPipInfo.getX()));
+    winPY = (100.0F - (2.0F * standardPipInfo.getY()));
 
 //- Generate the initial preamble of the script.
     file << "#!/bin/sh" << endl;
