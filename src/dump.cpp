@@ -147,10 +147,9 @@ patterns[] = { AD(corners), AD(ace), AD(c2), AD(c3), AD(c4), AD(c5), AD(c6), AD(
  * @param  fileName - name of image file for the pip.
  * @return the generated string.
  */
-static string drawStandardPips(bool rotate, int card, const string & fileName)
+static string drawStandardPips(bool rotate, int card, desc & pipD)
 {
     stringstream outputStream;
-    desc pipD(standardPipInfo, fileName);
 
     for (int i = 0; i < patterns[card].length; ++i)
     {
@@ -475,7 +474,7 @@ int generateScript(int argc, char *argv[])
         suit    = string(suits[s]);
         alt     = string(alts[s]);
 
-        string pipFile = string("pips/") + pipDirectory + "/" + suit + "S.png";      // Try small pip file first.
+        string pipFile = string("pips/") + pipDirectory + "/" + suit + "S.png";     // Try small pip file first.
         desc pipD(cornerPipInfo, pipFile);
         if (!pipD.isFileFound())
         {
@@ -484,8 +483,12 @@ int generateScript(int argc, char *argv[])
             pipD.setFileName(pipFile);
         }
 
+        // Generate the playing cards in the current suit.
+        pipFile = string("pips/") + pipDirectory + "/" + suit + ".png";             // Use standard pip file.
+        desc standardPipD(standardPipInfo, pipFile);
         for (int c = 1; c < ELEMENTS(cards); ++c)
         {
+            // Set up the variables.
             card = string(cards[c]);
 
             string indexFile = string("indices/") + indexDirectory + "/" + suit + card + ".png";
@@ -502,11 +505,10 @@ int generateScript(int argc, char *argv[])
 
             string drawFace;
 
-            pipFile = string("pips/") + pipDirectory + "/" + suit + ".png";      // Use standard pip file.
             if (faceD.useStandardPips())
             {
                 // The face directory does not have the needed image file, use standard pips.
-                drawFace = drawStandardPips(true, c, pipFile);
+                drawFace = drawStandardPips(true, c, standardPipD);
             }
             else
             {
@@ -516,7 +518,7 @@ int generateScript(int argc, char *argv[])
             }
 
 
-//- Write to output file.
+            // Write to output file.
             file << "# Draw the " << cardNames[c] << " of " << suitNames[s] << " as file " << suit << card << ".png." << endl;
             file << startString;
 
@@ -531,7 +533,7 @@ int generateScript(int argc, char *argv[])
 
             if (faceD.useStandardPips())
             {
-                drawFace = drawStandardPips(false, c, pipFile);
+                drawFace = drawStandardPips(false, c, standardPipD);
             }
             file << drawFace;				// Draw either the rest of the pips or the needed image.
             file << pipD.draw();			// Draw corner pip.
