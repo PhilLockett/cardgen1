@@ -52,6 +52,11 @@ static float winPY;
 
 
 /**
+ * @section main code.
+ *
+ */
+
+/**
  * Generate the initial blank card string used as a template for each card.
  *
  * @return the generated string.
@@ -66,11 +71,14 @@ static string genStartString(void)
 }
 
 
+/**
+ * Constants for drawStandardPips().
+ *
+ */
 static const float offsets[] = { (1.0F / 2), (0.0F), (1.0F), (1.0F / 4), (1.0F / 3), (1.0F / 6) };
 
 static const struct
 {
-
     int     xIndex;
     int     yIndex;
     bool    rotate;
@@ -415,7 +423,9 @@ int generateScript(int argc, char *argv[])
         return 1;
     }
 
-//- Calculate viewport window size as percentages of the card size.
+//- Calculate viewport window size as percentages of the card size. In this
+//  context the viewport is the area of the card not occupied by the standard
+//  pip boarders.
     winPX = (100.0F - (2.0F * standardPipInfo.getX()));
     winPY = (100.0F - (2.0F * standardPipInfo.getY()));
 
