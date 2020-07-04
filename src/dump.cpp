@@ -32,7 +32,7 @@
 
 
 /**
- * @section Internal variables.
+ * @section Internal constants and variables.
  *
  */
 
@@ -65,6 +65,8 @@ static string genStartString(void)
     return outputStream.str();
 }
 
+
+static const float offsets[] = { (1.0F / 2), (0.0F), (1.0F), (1.0F / 4), (1.0F / 3), (1.0F / 6) };
 
 static const struct
 {
@@ -100,8 +102,6 @@ static int getXIndex(int locIndex) { return loc[locIndex].xIndex; }
 static int getYIndex(int locIndex) { return loc[locIndex].yIndex; }
 static bool getRotate(int locIndex) { return loc[locIndex].rotate; }
 
-static const float offsets[] = { (1.0F / 2), (0.0F), (1.0F), (1.0F / 4), (1.0F / 3), (1.0F / 6) };
-
 static float getXOffset(int locIndex) { return offsets[getXIndex(locIndex)]; }
 static float getYOffset(int locIndex) { return offsets[getYIndex(locIndex)]; }
 
@@ -127,24 +127,7 @@ const struct
     int length;
     const int * const locations;
 }
-    patterns[] =
-{
-    AD(corners),
-    AD(ace),
-    AD(c2),
-    AD(c3),
-    AD(c4),
-    AD(c5),
-    AD(c6),
-    AD(c7),
-    AD(c8),
-    AD(c9),
-    AD(c10),
-    AD(jack),
-    AD(queen),
-    AD(king)
-
-};
+patterns[] = { AD(corners), AD(ace), AD(c2), AD(c3), AD(c4), AD(c5), AD(c6), AD(c7), AD(c8), AD(c9), AD(c10), AD(jack), AD(queen), AD(king) };
 
 
 /**
@@ -184,7 +167,7 @@ static string drawStandardPips(bool rotate, int card, const string & fileName)
  * aspect ratio of the image is to be maintained, otherwise the image is
  * stretched to fill the card. Note that this is done for each image because
  * the dimensions can vary.
- * 
+ *
  * @param  faceD - Image descriptor.
  * @param  fileName - name of image file for the pip.
  * @return the generated string.
@@ -355,7 +338,7 @@ static void drawDefaultJoker(ofstream & file, const string & fileName)
 
 /**
  * Joker drawing routine - a bit messy, but gets the job done.
- * 
+ *
  * @param  fails - default joker image output count.
  * @param  file - output file stream.
  * @param  suit - index of suit for the joker being generated.
@@ -415,7 +398,7 @@ static int drawJoker(int fails, ofstream & file, int suit)
 
 /**
  * The bulk of the script generation work.
- * 
+ *
  * @param  argc - command line argument count.
  * @param  argv - command line argument vector.
  * @return error value or 0 if no errors.
@@ -570,5 +553,3 @@ int generateScript(int argc, char *argv[])
 
     return 0;
 }
-
-
