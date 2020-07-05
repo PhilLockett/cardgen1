@@ -43,9 +43,6 @@ static const char* cards[]  = { "0", "A", "2", "3", "4", "5", "6", "7", "8", "9"
 static const char* suitNames[]  = { "Clubs", "Diamonds", "Hearts", "Spades" };
 static const char* cardNames[]  = { "Joker", "Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King" };
 
-static string suit;
-static string alt;
-static string card;
 
 static float winPX;
 static float winPY;
@@ -315,8 +312,9 @@ static void drawImageMagickJoker(ofstream & file, const string & fileName)
  *
  * @param  file - output file stream.
  * @param  fileName - name of joker image file being generated.
+ * @param  suit - index of suit for the joker being generated.
  */
-static void drawDefaultJoker(ofstream & file, const string & fileName)
+static void drawDefaultJoker(ofstream & file, const string & fileName, int suit)
 {
     string startString = genStartString();
 
@@ -327,7 +325,7 @@ static void drawDefaultJoker(ofstream & file, const string & fileName)
     file << startString;
 
     // Draw "Joker" indices if provided.
-    string indexFile = string("indices/") + indexDirectory + "/" + suit + "Joker.png";
+    string indexFile = string("indices/") + indexDirectory + "/" + string(suits[suit]) + "Joker.png";
     desc indexD(indexInfo, indexFile);
     if (indexD.isFileFound())
     {
@@ -395,7 +393,7 @@ static int drawJoker(int fails, ofstream & file, int suit)
         break;
 
     default:
-        drawDefaultJoker(file, fileName);
+        drawDefaultJoker(file, fileName, suit);
         break;
     }
 
@@ -421,6 +419,7 @@ int generateScript(int argc, char *argv[])
 
         return 1;
     }
+
 
 //- Calculate viewport window size as percentages of the card size. In this
 //  context the viewport is the area of the card not occupied by the standard
@@ -467,12 +466,13 @@ int generateScript(int argc, char *argv[])
 
 //- Initial blank card string used as a template for each card.
     string startString = genStartString();
+    string suit;
+    string card;
 
 //- Generate all the playing cards.
     for (int s = 0; s < ELEMENTS(suits); ++s)
     {
         suit    = string(suits[s]);
-        alt     = string(alts[s]);
 
         string pipFile = string("pips/") + pipDirectory + "/" + suit + "S.png";     // Try small pip file first.
         desc pipD(cornerPipInfo, pipFile);
@@ -496,7 +496,7 @@ int generateScript(int argc, char *argv[])
             if (!indexD.isFileFound())
             {
                 // indexInfo for suit file not found, so use alternate index file.
-                indexFile = string("indices/") + indexDirectory + "/" + alt + card + ".png";
+                indexFile = string("indices/") + indexDirectory + "/" + string(alts[s]) + card + ".png";
                 indexD.setFileName(indexFile);
             }
 
