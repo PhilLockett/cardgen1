@@ -44,10 +44,6 @@ static const char* suitNames[]  = { "Clubs", "Diamonds", "Hearts", "Spades" };
 static const char* cardNames[]  = { "Joker", "Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King" };
 
 
-static float winPX;
-static float winPY;
-
-
 /**
  * @section main code.
  *
@@ -419,13 +415,6 @@ int generateScript(int argc, char *argv[])
 
         return 1;
     }
-
-
-//- Calculate viewport window size as percentages of the card size. In this
-//  context the viewport is the area of the card not occupied by the standard
-//  pip boarders.
-    winPX = (100.0F - (2.0F * standardPipInfo.getX()));
-    winPY = (100.0F - (2.0F * standardPipInfo.getY()));
 
 //- Generate the initial preamble of the script.
     file << "#!/bin/sh" << endl;

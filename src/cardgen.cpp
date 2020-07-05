@@ -65,6 +65,9 @@ float originalImageHeight = 50 - boarderY;
 int originalWidthPX  = ROUND(originalImageWidth * cardWidth / 100);
 int originalHeightPX = ROUND(originalImageHeight * cardHeight / 100);
 
+float winPX;
+float winPY;
+
 float imageWidth;
 float imageHeight;
 int widthPX;

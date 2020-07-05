@@ -226,6 +226,12 @@ void recalculate(void)
     outlineWidth = cardWidth-borderOffset-1;
     outlineHeight = cardHeight-borderOffset-1;
 
+//- Calculate viewport window size as percentages of the card size. In this
+//  context the viewport is the area of the card not occupied by the standard
+//  pip boarders.
+    winPX = (100.0F - (2.0F * standardPipInfo.getX()));
+    winPY = (100.0F - (2.0F * standardPipInfo.getY()));
+
 //- Card face image values in pixels.
     imageWidth  = 100 - (2 * boarderX);
     imageHeight = 50 - boarderY;

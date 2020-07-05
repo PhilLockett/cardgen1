@@ -78,6 +78,9 @@ extern float originalImageHeight;
 extern int originalWidthPX;
 extern int originalHeightPX;
 
+extern float winPX;
+extern float winPY;
+
 extern float imageWidth;
 extern float imageHeight;
 extern int widthPX;
